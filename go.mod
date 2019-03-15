@@ -1,4 +1,4 @@
-module github.com/MaxTech/commons
+module github.com/maxtech/commons
 
 go 1.12
 
