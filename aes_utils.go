@@ -5,6 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
 	"io"
 )
 
@@ -30,7 +31,7 @@ func (au *aesUtils) PKCS7UnPadding(origData []byte) []byte {
 func (au *aesUtils) AesCBCEncrypt(rawData,key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	//填充原文
@@ -41,7 +42,7 @@ func (au *aesUtils) AesCBCEncrypt(rawData,key []byte) ([]byte, error) {
 	//block大小 16
 	iv := cipherText[:blockSize]
 	if _, err := io.ReadFull(rand.Reader,iv); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	//block大小和初始向量大小一定要一致
@@ -51,23 +52,23 @@ func (au *aesUtils) AesCBCEncrypt(rawData,key []byte) ([]byte, error) {
 	return cipherText, nil
 }
 
-func (au *aesUtils) AesCBCDncrypt(encryptData, key []byte) ([]byte,error) {
+func (au *aesUtils) AesCBCDncrypt(encryptData, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	blockSize := block.BlockSize()
 
 	if len(encryptData) < blockSize {
-		panic("ciphertext too short")
+		return nil, errors.New("ciphertext too short")
 	}
 	iv := encryptData[:blockSize]
 	encryptData = encryptData[blockSize:]
 
 	// CBC mode always works in whole blocks.
 	if len(encryptData)%blockSize != 0 {
-		panic("ciphertext is not a multiple of the block size")
+		return nil, errors.New("ciphertext is not a multiple of the block size")
 	}
 
 	mode := cipher.NewCBCDecrypter(block, iv)
