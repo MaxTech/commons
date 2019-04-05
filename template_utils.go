@@ -21,7 +21,13 @@ func CreateCommonRender(templatesDir string) multitemplate.Renderer {
     }
 
     for _, content := range contents {
-        dirList := strings.Split(content, "/")
+        dirList := make([]string, 0)
+        switch runtime.GOOS {
+        case "windows":
+            dirList = strings.Split(content, `\`)
+        default:
+            dirList = strings.Split(content, `/`)
+        }
         dirName := dirList[len(dirList)-2]
 
         includes, err := filepath.Glob(fmt.Sprintf("%s/%s/%s/%s", templatesDir, "includes", dirName, "*.html"))
