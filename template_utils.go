@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/gin-contrib/multitemplate"
     "path/filepath"
+    "runtime"
     "strings"
 )
 
