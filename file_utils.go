@@ -15,7 +15,7 @@ var FileUtils *fileUtils
 func (fu *fileUtils) CheckAndMakeDirs(dirPath string) {
     checkPath := strings.ToLower(dirPath)
     _, err := os.Stat(checkPath)
-    if err!= nil && os.IsNotExist(err) {
+    if err != nil && os.IsNotExist(err) {
         err = os.MkdirAll(checkPath, os.ModePerm)
         if err != nil {
             log.Println("create dir error:", err.Error())
@@ -34,7 +34,7 @@ func (fu *fileUtils) CheckExists(path string) bool {
     if err == nil {
         return true
     }
-    if err!= nil && os.IsNotExist(err) {
+    if os.IsNotExist(err) {
         return false
     }
     return false
@@ -42,6 +42,6 @@ func (fu *fileUtils) CheckExists(path string) bool {
 
 func (fu *fileUtils) GetFileExtName(fileName string) string {
     fileNameSplit := strings.Split(fileName, ".")
-    extName := fileNameSplit[len(fileNameSplit) -1]
+    extName := fileNameSplit[len(fileNameSplit)-1]
     return extName
 }

@@ -52,4 +52,3 @@ func CreateCommonRender(templatesDir string) multitemplate.Renderer {
 
     return renderer
 }
-

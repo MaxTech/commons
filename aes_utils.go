@@ -63,7 +63,6 @@ func (au *aesUtils) AesCBCDecrypt(encryptData, key []byte) ([]byte, error) {
     if len(encryptData) < blockSize {
         return nil, errors.New("ciphertext too short")
     }
-
     iv := encryptData[:blockSize]
     encryptData = encryptData[blockSize:]
 
@@ -76,10 +75,8 @@ func (au *aesUtils) AesCBCDecrypt(encryptData, key []byte) ([]byte, error) {
 
     // CryptBlocks can work in-place if the two arguments are the same.
     mode.CryptBlocks(encryptData, encryptData)
-
     //解填充
     encryptData = au.PKCS7UnPadding(encryptData)
-
     return encryptData, nil
 }
 

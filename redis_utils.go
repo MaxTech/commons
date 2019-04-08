@@ -14,7 +14,7 @@ func (ru *redisUtils) InitRedisClient(address string, password string, dbNum int
     redisClient := redis.NewClient(&redis.Options{
         Addr:     address,
         Password: password, // no password set
-        DB:       dbNum,  // use default DB
+        DB:       dbNum,    // use default DB
     })
     return redisClient
 }

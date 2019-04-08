@@ -8,9 +8,9 @@ import (
 )
 
 const (
-    DebugMode = "debug"
+    DebugMode   = "debug"
     ReleaseMode = "release"
-    TestMode = "test"
+    TestMode    = "test"
 )
 
 type configUtils struct {
