@@ -7,12 +7,7 @@ import (
     "strings"
 )
 
-type fileUtils struct {
-}
-
-var FileUtils *fileUtils
-
-func (fu *fileUtils) CheckAndMakeDirs(dirPath string) {
+func CheckAndMakeDirs(dirPath string) {
     checkPath := strings.ToLower(dirPath)
     _, err := os.Stat(checkPath)
     if err != nil && os.IsNotExist(err) {
@@ -23,13 +18,13 @@ func (fu *fileUtils) CheckAndMakeDirs(dirPath string) {
     }
 }
 
-func (fu *fileUtils) FillByte(fixByteCount int, fileBuffer *bytes.Buffer) {
+func FillByte(fixByteCount int, fileBuffer *bytes.Buffer) {
     for i := 0; i < fixByteCount; i++ {
         fileBuffer.Write([]byte{0x0})
     }
 }
 
-func (fu *fileUtils) CheckExists(path string) bool {
+func CheckExists(path string) bool {
     _, err := os.Stat(path)
     if err == nil {
         return true
@@ -40,7 +35,7 @@ func (fu *fileUtils) CheckExists(path string) bool {
     return false
 }
 
-func (fu *fileUtils) GetFileExtName(fileName string) string {
+func GetFileExtName(fileName string) string {
     fileNameSplit := strings.Split(fileName, ".")
     extName := fileNameSplit[len(fileNameSplit)-1]
     return extName

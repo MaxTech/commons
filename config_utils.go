@@ -13,16 +13,11 @@ const (
     TestMode    = "test"
 )
 
-type configUtils struct {
-}
-
-var ConfigUtils *configUtils
-
 type ConfigFormat interface {
     Version() string
 }
 
-func (cu *configUtils) LoadConfigFile(confPath string, pConfig interface{}) {
+func LoadConfigFile(confPath string, pConfig interface{}) {
     configFile, err := ioutil.ReadFile(confPath)
     if err != nil {
         log.Fatal("Load yaml config file error: ", err)
@@ -35,7 +30,7 @@ func (cu *configUtils) LoadConfigFile(confPath string, pConfig interface{}) {
     return
 }
 
-func (cu *configUtils) SaveConfigFile(confPath string, config ConfigFormat) {
+func SaveConfigFile(confPath string, config ConfigFormat) {
     configBytes, err := yaml.Marshal(config)
     if err != nil {
         log.Fatal("Save yaml config file error: ", err)

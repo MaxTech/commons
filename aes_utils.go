@@ -9,26 +9,21 @@ import (
     "io"
 )
 
-type aesUtils struct {
-}
-
-var AESUtils *aesUtils
-
 //使用PKCS7进行填充，IOS也是7
-func (au *aesUtils) PKCS7Padding(ciphertext []byte, blockSize int) []byte {
+func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
     padding := blockSize - len(ciphertext)%blockSize
     padtext := bytes.Repeat([]byte{byte(padding)}, padding)
     return append(ciphertext, padtext...)
 }
 
-func (au *aesUtils) PKCS7UnPadding(origData []byte) []byte {
+func PKCS7UnPadding(origData []byte) []byte {
     length := len(origData)
     unpadding := int(origData[length-1])
     return origData[:(length - unpadding)]
 }
 
 //aes加密，填充秘钥key的16位，24,32分别对应AES-128, AES-192, or AES-256.
-func (au *aesUtils) AesCBCEncrypt(rawData, key []byte) ([]byte, error) {
+func AesCBCEncrypt(rawData, key []byte) ([]byte, error) {
     block, err := aes.NewCipher(key)
     if err != nil {
         return nil, err
@@ -36,7 +31,7 @@ func (au *aesUtils) AesCBCEncrypt(rawData, key []byte) ([]byte, error) {
 
     //填充原文
     blockSize := block.BlockSize()
-    rawData = au.PKCS7Padding(rawData, blockSize)
+    rawData = PKCS7Padding(rawData, blockSize)
     //初始向量IV必须是唯一，但不需要保密
     cipherText := make([]byte, blockSize+len(rawData))
     //block大小 16
@@ -52,7 +47,7 @@ func (au *aesUtils) AesCBCEncrypt(rawData, key []byte) ([]byte, error) {
     return cipherText, nil
 }
 
-func (au *aesUtils) AesCBCDecrypt(encryptData, key []byte) ([]byte, error) {
+func AesCBCDecrypt(encryptData, key []byte) ([]byte, error) {
     block, err := aes.NewCipher(key)
     if err != nil {
         return nil, err
@@ -76,17 +71,17 @@ func (au *aesUtils) AesCBCDecrypt(encryptData, key []byte) ([]byte, error) {
     // CryptBlocks can work in-place if the two arguments are the same.
     mode.CryptBlocks(encryptData, encryptData)
     //解填充
-    encryptData = au.PKCS7UnPadding(encryptData)
+    encryptData = PKCS7UnPadding(encryptData)
     return encryptData, nil
 }
 
-func (au *aesUtils) ZeroPadding(ciphertext []byte, blockSize int) []byte {
+func ZeroPadding(ciphertext []byte, blockSize int) []byte {
     padding := blockSize - len(ciphertext)%blockSize
     padtext := bytes.Repeat([]byte{0}, padding)
     return append(ciphertext, padtext...)
 }
 
-func (au *aesUtils) ZeroUnPadding(origData []byte) []byte {
+func ZeroUnPadding(origData []byte) []byte {
     length := len(origData)
     unpadding := int(origData[length-1])
     return origData[:(length - unpadding)]
