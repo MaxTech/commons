@@ -1,6 +1,7 @@
 package commons
 
 import (
+    "bytes"
     "github.com/google/uuid"
     "strings"
 )
