@@ -12,3 +12,7 @@ func GenUUIDString(spliteChar string) string {
     }
     return strings.Replace(uuid, "-", spliteChar, -1)
 }
+
+func GenUUIDBytes() *bytes.Buffer {
+    return bytes.NewBuffer(uuid.New())
+}
