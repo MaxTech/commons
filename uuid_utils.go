@@ -15,5 +15,6 @@ func GenUUIDString(spliteChar string) string {
 }
 
 func GenUUIDBytes() *bytes.Buffer {
-    return bytes.NewBuffer(uuid.New())
+    tuid := uuid.New()
+    return bytes.NewBuffer(tuid[:])
 }
