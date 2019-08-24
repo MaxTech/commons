@@ -1,44 +1,73 @@
 package commons
 
 import (
+    "encoding/json"
     "gopkg.in/yaml.v2"
     "io/ioutil"
     "log"
     "os"
 )
 
+type AppMode string
+
 const (
-    DebugMode   = "debug"
-    ReleaseMode = "release"
-    TestMode    = "test"
+    DevMode     AppMode = "dev"
+    TestMode    AppMode = "test"
+    ReleaseMode AppMode = "release"
 )
 
 type ConfigFormat interface {
-    Version() string
+    AppMode() string
 }
 
-func LoadConfigFile(confPath string, pConfig interface{}) {
-    configFile, err := ioutil.ReadFile(confPath)
+func LoadYamlConfigFile(_confPath string) (_pConfig interface{}) {
+    configFile, err := ioutil.ReadFile(_confPath)
     if err != nil {
         log.Fatal("Load yaml config file error: ", err)
     }
 
-    err = yaml.Unmarshal(configFile, pConfig)
+    err = yaml.Unmarshal(configFile, _pConfig)
     if err != nil {
         log.Fatal("Load yaml config file error: ", err)
     }
     return
 }
 
-func SaveConfigFile(confPath string, config ConfigFormat) {
-    configBytes, err := yaml.Marshal(config)
+func SaveYamlConfigFile(_confPath string, _config ConfigFormat) {
+    configBytes, err := yaml.Marshal(_config)
     if err != nil {
         log.Fatal("Save yaml config file error: ", err)
     }
 
-    err = ioutil.WriteFile(confPath, configBytes, os.ModePerm)
+    err = ioutil.WriteFile(_confPath, configBytes, os.ModePerm)
     if err != nil {
         log.Fatal("Save yaml config file error: ", err)
+    }
+    return
+}
+
+func LoadJsonConfigFile(_confPath string) (_pConfig interface{}) {
+    configFile, err := ioutil.ReadFile(_confPath)
+    if err != nil {
+        log.Fatal("Load json config file error: ", err)
+    }
+
+    err = json.Unmarshal(configFile, _pConfig)
+    if err != nil {
+        log.Fatal("Load json config file error: ", err)
+    }
+    return
+}
+
+func SaveJsonConfigFile(_confPath string, _config ConfigFormat) {
+    configBytes, err := json.Marshal(_config)
+    if err != nil {
+        log.Fatal("Save json config file error: ", err)
+    }
+
+    err = ioutil.WriteFile(_confPath, configBytes, os.ModePerm)
+    if err != nil {
+        log.Fatal("Save json config file error: ", err)
     }
     return
 }
