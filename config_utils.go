@@ -11,7 +11,7 @@ import (
 type AppMode string
 
 const (
-    DevMode     AppMode = "dev"
+    DebugMode   AppMode = "debug"
     TestMode    AppMode = "test"
     ReleaseMode AppMode = "release"
 )
