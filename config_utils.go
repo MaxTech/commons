@@ -23,7 +23,7 @@ type ConfigFormat interface {
 func LoadYamlConfigFile(_confPath string, _pConfig interface{}) {
     configFile, err := ioutil.ReadFile(_confPath)
     if err != nil {
-        log.Fatal("Load yaml config file error: ", err)
+        log.Fatal("Load yaml file read error: ", err)
     }
 
     err = yaml.Unmarshal(configFile, _pConfig)
@@ -49,7 +49,7 @@ func SaveYamlConfigFile(_confPath string, _config ConfigFormat) {
 func LoadJsonConfigFile(_confPath string, _pConfig interface{}) {
     configFile, err := ioutil.ReadFile(_confPath)
     if err != nil {
-        log.Fatal("Load json config file error: ", err)
+        log.Fatal("Load json file read error: ", err)
     }
 
     err = json.Unmarshal(configFile, _pConfig)
