@@ -5,6 +5,7 @@ import (
     "fmt"
     "os"
     "strings"
+    "time"
 )
 
 func CheckAndMakeDirs(_dirPath string) {
@@ -13,7 +14,7 @@ func CheckAndMakeDirs(_dirPath string) {
     if err != nil && os.IsNotExist(err) {
         err = os.MkdirAll(checkPath, os.ModePerm)
         if err != nil {
-            _, _ = fmt.Fprintln(os.Stderr, "create dir error:", err.Error())
+            _, _ = fmt.Fprintln(os.Stderr, time.Now().Format(time.RFC3339Nano), "[ERROR]", "create dir error:", err.Error())
         }
     }
 }

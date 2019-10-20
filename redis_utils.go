@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/go-redis/redis"
     "os"
+    "time"
 )
 
 func InitRedisClient(_address, _password string, _dbNum int) *redis.Client {
@@ -18,7 +19,7 @@ func InitRedisClient(_address, _password string, _dbNum int) *redis.Client {
 func TestRedisClient(_redisClient *redis.Client) bool {
     _, err := _redisClient.Ping().Result()
     if err != nil {
-        _, _ = fmt.Fprintln(os.Stderr, "redis connect error: ", err)
+        _, _ = fmt.Fprintln(os.Stderr, time.Now().Format(time.RFC3339Nano), "[ERROR]", "redis connect error: ", err)
         return false
     }
     return true
