@@ -2,8 +2,8 @@ package commons
 
 import "encoding/json"
 
-func ParseJsonString(data interface{}) string {
-    jsonB, _ := json.Marshal(data)
+func ParseJsonString(_data interface{}) string {
+    jsonB, _ := json.Marshal(_data)
     if jsonB == nil {
         return ""
     }

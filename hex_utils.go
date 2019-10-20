@@ -2,14 +2,14 @@ package commons
 
 import "encoding/hex"
 
-func HexEncodeBytesToBytes(src []byte) []byte {
-    dst := make([]byte, hex.EncodedLen(len(src)))
-    _ = hex.Encode(dst, src)
+func HexEncodeBytesToBytes(_src []byte) []byte {
+    dst := make([]byte, hex.EncodedLen(len(_src)))
+    _ = hex.Encode(dst, _src)
     return dst
 }
 
-func HexDecodeBytesToBytes(src []byte) []byte {
-    dst := make([]byte, hex.EncodedLen(len(src)))
-    _, _ = hex.Decode(dst, src)
+func HexDecodeBytesToBytes(_src []byte) []byte {
+    dst := make([]byte, hex.EncodedLen(len(_src)))
+    _, _ = hex.Decode(dst, _src)
     return dst
 }

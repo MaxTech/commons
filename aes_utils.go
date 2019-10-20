@@ -10,30 +10,30 @@ import (
 )
 
 //使用PKCS7进行填充，IOS也是7
-func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
-    padding := blockSize - len(ciphertext)%blockSize
-    padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-    return append(ciphertext, padtext...)
+func PKCS7Padding(_cipherText []byte, _blockSize int) []byte {
+    padding := _blockSize - len(_cipherText)%_blockSize
+    padText := bytes.Repeat([]byte{byte(padding)}, padding)
+    return append(_cipherText, padText...)
 }
 
-func PKCS7UnPadding(origData []byte) []byte {
-    length := len(origData)
-    unpadding := int(origData[length-1])
-    return origData[:(length - unpadding)]
+func PKCS7UnPadding(_originData []byte) []byte {
+    length := len(_originData)
+    unPadding := int(_originData[length-1])
+    return _originData[:(length - unPadding)]
 }
 
 //aes加密，填充秘钥key的16位，24,32分别对应AES-128, AES-192, or AES-256.
-func AesCBCEncrypt(rawData, key []byte) ([]byte, error) {
-    block, err := aes.NewCipher(key)
+func AesCBCEncrypt(_rawData, _key []byte) ([]byte, error) {
+    block, err := aes.NewCipher(_key)
     if err != nil {
         return nil, err
     }
 
     //填充原文
     blockSize := block.BlockSize()
-    rawData = PKCS7Padding(rawData, blockSize)
+    _rawData = PKCS7Padding(_rawData, blockSize)
     //初始向量IV必须是唯一，但不需要保密
-    cipherText := make([]byte, blockSize+len(rawData))
+    cipherText := make([]byte, blockSize+len(_rawData))
     //block大小 16
     iv := cipherText[:blockSize]
     if _, err := io.ReadFull(rand.Reader, iv); err != nil {
@@ -42,47 +42,47 @@ func AesCBCEncrypt(rawData, key []byte) ([]byte, error) {
 
     //block大小和初始向量大小一定要一致
     mode := cipher.NewCBCEncrypter(block, iv)
-    mode.CryptBlocks(cipherText[blockSize:], rawData)
+    mode.CryptBlocks(cipherText[blockSize:], _rawData)
 
     return cipherText, nil
 }
 
-func AesCBCDecrypt(encryptData, key []byte) ([]byte, error) {
-    block, err := aes.NewCipher(key)
+func AesCBCDecrypt(_encryptData, _key []byte) ([]byte, error) {
+    block, err := aes.NewCipher(_key)
     if err != nil {
         return nil, err
     }
 
     blockSize := block.BlockSize()
 
-    if len(encryptData) < blockSize {
+    if len(_encryptData) < blockSize {
         return nil, errors.New("ciphertext too short")
     }
-    iv := encryptData[:blockSize]
-    encryptData = encryptData[blockSize:]
+    iv := _encryptData[:blockSize]
+    _encryptData = _encryptData[blockSize:]
 
     // CBC mode always works in whole blocks.
-    if len(encryptData)%blockSize != 0 {
+    if len(_encryptData)%blockSize != 0 {
         return nil, errors.New("ciphertext is not a multiple of the block size")
     }
 
     mode := cipher.NewCBCDecrypter(block, iv)
 
     // CryptBlocks can work in-place if the two arguments are the same.
-    mode.CryptBlocks(encryptData, encryptData)
+    mode.CryptBlocks(_encryptData, _encryptData)
     //解填充
-    encryptData = PKCS7UnPadding(encryptData)
-    return encryptData, nil
+    _encryptData = PKCS7UnPadding(_encryptData)
+    return _encryptData, nil
 }
 
-func ZeroPadding(ciphertext []byte, blockSize int) []byte {
-    padding := blockSize - len(ciphertext)%blockSize
+func ZeroPadding(_cipherText []byte, _blockSize int) []byte {
+    padding := _blockSize - len(_cipherText)%_blockSize
     padtext := bytes.Repeat([]byte{0}, padding)
-    return append(ciphertext, padtext...)
+    return append(_cipherText, padtext...)
 }
 
-func ZeroUnPadding(origData []byte) []byte {
-    length := len(origData)
-    unpadding := int(origData[length-1])
-    return origData[:(length - unpadding)]
+func ZeroUnPadding(_originData []byte) []byte {
+    length := len(_originData)
+    unPadding := int(_originData[length-1])
+    return _originData[:(length - unPadding)]
 }

@@ -1,23 +1,24 @@
 package commons
 
 import (
+    "fmt"
     "github.com/go-redis/redis"
-    "log"
+    "os"
 )
 
-func InitRedisClient(address string, password string, dbNum int) *redis.Client {
+func InitRedisClient(_address, _password string, _dbNum int) *redis.Client {
     redisClient := redis.NewClient(&redis.Options{
-        Addr:     address,
-        Password: password, // no password set
-        DB:       dbNum,    // use default DB
+        Addr:     _address,
+        Password: _password, // no password set
+        DB:       _dbNum,    // use default DB
     })
     return redisClient
 }
 
-func TestRedisClient(redisClient *redis.Client) bool {
-    _, err := redisClient.Ping().Result()
+func TestRedisClient(_redisClient *redis.Client) bool {
+    _, err := _redisClient.Ping().Result()
     if err != nil {
-        log.Println("redis connect error: ", err)
+        _, _ = fmt.Fprintln(os.Stderr, "redis connect error: ", err)
         return false
     }
     return true

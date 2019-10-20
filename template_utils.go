@@ -8,15 +8,15 @@ import (
     "strings"
 )
 
-func CreateCommonRender(templatesDir string) multitemplate.Renderer {
+func CreateCommonRender(_templatesDir string) multitemplate.Renderer {
     renderer := multitemplate.NewRenderer()
 
-    layouts, err := filepath.Glob(fmt.Sprintf("%s/%s", templatesDir, "layouts/*.html"))
+    layouts, err := filepath.Glob(fmt.Sprintf("%s/%s", _templatesDir, "layouts/*.html"))
     if err != nil {
         panic(err.Error())
     }
 
-    contents, err := filepath.Glob(fmt.Sprintf("%s/%s", templatesDir, "contents/**/*.html"))
+    contents, err := filepath.Glob(fmt.Sprintf("%s/%s", _templatesDir, "contents/**/*.html"))
     if err != nil {
         panic(err.Error())
     }
@@ -31,7 +31,7 @@ func CreateCommonRender(templatesDir string) multitemplate.Renderer {
         }
         dirName := dirList[len(dirList)-2]
 
-        includes, err := filepath.Glob(fmt.Sprintf("%s/%s/%s/%s", templatesDir, "includes", dirName, "*.html"))
+        includes, err := filepath.Glob(fmt.Sprintf("%s/%s/%s/%s", _templatesDir, "includes", dirName, "*.html"))
         if err != nil {
             panic(err.Error())
         }
@@ -48,7 +48,7 @@ func CreateCommonRender(templatesDir string) multitemplate.Renderer {
         renderer.AddFromFiles(dirName, files...)
     }
 
-    defaults, err := filepath.Glob(fmt.Sprintf("%s/%s", templatesDir, "default/*.html"))
+    defaults, err := filepath.Glob(fmt.Sprintf("%s/%s", _templatesDir, "default/*.html"))
     if err != nil {
         panic(err.Error())
     }

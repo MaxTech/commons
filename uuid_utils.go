@@ -6,15 +6,15 @@ import (
     "strings"
 )
 
-func GenUUIDString(spliteChar string) string {
-    uuid := uuid.New().String()
-    if spliteChar == "-" {
-        return uuid
+func GenUUIDString(_splitChar string) string {
+    newUuid := uuid.New().String()
+    if _splitChar == "-" {
+        return newUuid
     }
-    return strings.Replace(uuid, "-", spliteChar, -1)
+    return strings.Replace(newUuid, "-", _splitChar, -1)
 }
 
 func GenUUIDBytes() *bytes.Buffer {
-    tuid := uuid.New()
-    return bytes.NewBuffer(tuid[:])
+    newUuid := uuid.New()
+    return bytes.NewBuffer(newUuid[:])
 }

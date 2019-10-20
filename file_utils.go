@@ -2,30 +2,30 @@ package commons
 
 import (
     "bytes"
-    "log"
+    "fmt"
     "os"
     "strings"
 )
 
-func CheckAndMakeDirs(dirPath string) {
-    checkPath := strings.ToLower(dirPath)
+func CheckAndMakeDirs(_dirPath string) {
+    checkPath := strings.ToLower(_dirPath)
     _, err := os.Stat(checkPath)
     if err != nil && os.IsNotExist(err) {
         err = os.MkdirAll(checkPath, os.ModePerm)
         if err != nil {
-            log.Println("create dir error:", err.Error())
+            _, _ = fmt.Fprintln(os.Stderr, "create dir error:", err.Error())
         }
     }
 }
 
-func FillByte(fixByteCount int, fileBuffer *bytes.Buffer) {
-    for i := 0; i < fixByteCount; i++ {
-        fileBuffer.Write([]byte{0x0})
+func FillByte(_fixByteCount int, _fileBuffer *bytes.Buffer) {
+    for i := 0; i < _fixByteCount; i++ {
+        _fileBuffer.Write([]byte{0x0})
     }
 }
 
-func CheckExists(path string) bool {
-    _, err := os.Stat(path)
+func CheckExists(_path string) bool {
+    _, err := os.Stat(_path)
     if err == nil {
         return true
     }
@@ -35,8 +35,8 @@ func CheckExists(path string) bool {
     return false
 }
 
-func GetFileExtName(fileName string) string {
-    fileNameSplit := strings.Split(fileName, ".")
+func GetFileExtName(_fileName string) string {
+    fileNameSplit := strings.Split(_fileName, ".")
     extName := fileNameSplit[len(fileNameSplit)-1]
     return extName
 }
