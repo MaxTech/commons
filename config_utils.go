@@ -10,6 +10,10 @@ import (
 
 type AppMode string
 
+func (am AppMode)String() string {
+    return string(am)
+}
+
 const (
     DebugMode   AppMode = "debug"
     TestMode    AppMode = "test"
