@@ -6,6 +6,7 @@ import (
     "io/ioutil"
     "log"
     "os"
+    "path/filepath"
 )
 
 type AppMode string
@@ -25,7 +26,12 @@ type ConfigFormat interface {
 }
 
 func LoadYamlConfigFile(_confPath string, _pConfig interface{}) {
-    configFile, err := ioutil.ReadFile(_confPath)
+    absPath, err := filepath.Abs(_confPath)
+    if err != nil {
+        log.Fatal("Abs filepath parse error: ", err)
+    }
+
+    configFile, err := ioutil.ReadFile(absPath)
     if err != nil {
         log.Fatal("Load yaml file read error: ", err)
     }
@@ -43,7 +49,12 @@ func SaveYamlConfigFile(_confPath string, _config ConfigFormat) {
         log.Fatal("Save yaml config file error: ", err)
     }
 
-    err = ioutil.WriteFile(_confPath, configBytes, os.ModePerm)
+    absPath, err := filepath.Abs(_confPath)
+    if err != nil {
+        log.Fatal("Abs filepath parse error: ", err)
+    }
+
+    err = ioutil.WriteFile(absPath, configBytes, os.ModePerm)
     if err != nil {
         log.Fatal("Save yaml config file error: ", err)
     }
@@ -51,7 +62,12 @@ func SaveYamlConfigFile(_confPath string, _config ConfigFormat) {
 }
 
 func LoadJsonConfigFile(_confPath string, _pConfig interface{}) {
-    configFile, err := ioutil.ReadFile(_confPath)
+    absPath, err := filepath.Abs(_confPath)
+    if err != nil {
+        log.Fatal("Abs filepath parse error: ", err)
+    }
+
+    configFile, err := ioutil.ReadFile(absPath)
     if err != nil {
         log.Fatal("Load json file read error: ", err)
     }
@@ -69,7 +85,12 @@ func SaveJsonConfigFile(_confPath string, _config ConfigFormat) {
         log.Fatal("Save json config file error: ", err)
     }
 
-    err = ioutil.WriteFile(_confPath, configBytes, os.ModePerm)
+    absPath, err := filepath.Abs(_confPath)
+    if err != nil {
+        log.Fatal("Abs filepath parse error: ", err)
+    }
+
+    err = ioutil.WriteFile(absPath, configBytes, os.ModePerm)
     if err != nil {
         log.Fatal("Save json config file error: ", err)
     }
